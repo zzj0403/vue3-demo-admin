@@ -24,8 +24,7 @@
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input type="password" v-model="form.password" placeholder="请输入密码" show-password
-                    @keyup.enter.native="onSubmit">
+          <el-input type="password" v-model="form.password" placeholder="请输入密码" show-password>
             <template #prefix>
               <el-icon>
                 <lock/>
@@ -44,12 +43,10 @@
 </template>
 
 <script setup>
-import {ref, reactive} from 'vue'
+import {ref, reactive, onMounted,onBeforeUnmount} from 'vue'
 import {useRouter} from 'vue-router'
-import {login, getInfo} from '~/api/manager'
-import {setToken} from "~/composables/auth.js";
 import {toast} from "~/composables/util.js";
-
+import store from "~/store/index.js";
 
 const router = useRouter()
 const loading = ref(false)
@@ -77,33 +74,47 @@ const rules = {
 }
 
 const formRef = ref(null)
-
 const onSubmit = () => {
   formRef.value.validate((valid) => {
     if (!valid) {
       return false
     }
     loading.value = true
-    login(form.username, form.password).then(res => {
-      console.log(res)
-      // 提示成功
-
+    store.dispatch("login", form).then(res => {
       toast("登录成功")
-
-      // 存储token和用户相关信息，下节课讲
-      setToken(res.token)
-
-      // 获取用户相关信息
-      getInfo().then(res2 => {
-        console.log(res2)
-      })
-      // 跳转到后台首页
       router.push("/")
     }).finally(() => {
       return loading.value = false
     })
+
+    // login(form.username, form.password).then(res => {
+    //   // 提示成功
+    //   toast("登录成功")
+    //
+    //   // 存储token和用户相关信息
+    //   setToken(res.token)
+    //
+    //   // 跳转到后台首页
+    //
+    // }).finally(() => {
+    //   return loading.value = false
+    // })
   })
 }
+
+// 监听回车事件
+function onkeyup(e) {
+  if (e.key === "Enter") onSubmit()
+}
+
+// 添加键盘监听
+onMounted(()=>{
+  document.addEventListener("keyup", onkeyup)
+})
+//移除键盘监听
+onBeforeUnmount(()=>{
+  document.removeEventListener("keyup", onkeyup)
+})
 </script>
 
 <style scoped>

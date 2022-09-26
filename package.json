@@ -10,12 +10,15 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.0.9",
+    "@vueuse/core": "^9.3.0",
     "@vueuse/integrations": "^9.2.0",
     "axios": "^0.27.2",
     "element-plus": "^2.2.17",
+    "nprogress": "^0.2.0",
     "universal-cookie": "^4.0.4",
     "vue": "^3.2.37",
-    "vue-router": "4"
+    "vue-router": "4",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.1.0",

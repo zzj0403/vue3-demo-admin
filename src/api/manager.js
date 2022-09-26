@@ -11,3 +11,6 @@ export function getInfo(username,password){
     return axios.post("/admin/getinfo")
 }
 
+export function logout(username,password){
+    return axios.post("/admin/logout")
+}

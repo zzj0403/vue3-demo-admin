@@ -1,5 +1,5 @@
 # git 会忽略的文件
-
+.vscode
 .DS_Store
 node_modules
 dist
